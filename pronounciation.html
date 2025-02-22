@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background-color: #f0f8ff;
+            background-image: url('viet_level_backg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            cursor: url('lantern.png'), auto;
+            overflow-y: auto;
+        }
+
+        #question-container {
+            width: 90%;
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .level-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .level {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .arrows {
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 30px;
+            color: #333;
+        }
+
+        .level-dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            max-width: 200px;
+        }
+
+        .level-dropdown div {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .level-dropdown div:hover {
+            background-color: #ddd;
+        }
+
+        #wordList {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .word {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 60px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .word:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="question-container">
+        <div class="level-container">
+            <span class="arrows" id="prevLevel">&#8592;</span> <!-- Left Arrow -->
+            <div class="level" id="level" onclick="toggleDropdown()">Level 1</div> <!-- Clickable level name -->
+            <span class="arrows" id="nextLevel">&#8594;</span> <!-- Right Arrow -->
+        </div>
+
+        <div id="levelDropdown" class="level-dropdown">
+            <!-- Dropdown menu populated here -->
+        </div>
+
+        <h1 class="question">Click for Pronunciation</h1>
+        <div id="wordList"></div>
+        <audio id="audio"></audio>
+    </div>
+
+    <script>
+        // Array of levels with words and their corresponding audio files
+        const levels = [
+            [ // Level 1
+                { word: "Xin chào", audio: "sounds/one/xin chao.mp3" },
+                { word: "Chào buổi sáng", audio: "sounds/one/chao buoi sang.mp3" },
+                { word: "Tạm biệt", audio: "sounds/one/tam biet.mp3" },
+                { word: "Hẹn gặp lại", audio: "sounds/one/hen gap lai.mp3" },
+                { word: "Cảm ơn", audio: "sounds/one/cam on.mp3" },
+                { word: "Xin lỗi", audio: "sounds/one/xin loi.mp3" },
+                { word: "Chúc mừng", audio: "sounds/one/chuc mung.mp3" },
+                { word: "Bạn khoẻ không", audio: "sounds/one/ban khoe khong.mp3" },
+                { word: "Chúc may mắn", audio: "sounds/one/chuc may man.mp3" },
+                { word: "Tôi khoẻ", audio: "sounds/one/toi khoe.mp3" }
+            ],
+            [ // Level 2
+                { word: "Apple", audio: "sounds/two/apple.mp3" },
+                { word: "Banana", audio: "sounds/two/banana.mp3" },
+                { word: "Orange", audio: "sounds/two/orange.mp3" },
+                { word: "Grapes", audio: "sounds/two/grapes.mp3" },
+                { word: "Peach", audio: "sounds/two/peach.mp3" },
+                { word: "Pineapple", audio: "sounds/two/pineapple.mp3" },
+                { word: "Strawberry", audio: "sounds/two/strawberry.mp3" },
+                { word: "Watermelon", audio: "sounds/two/watermelon.mp3" },
+                { word: "Cherry", audio: "sounds/two/cherry.mp3" },
+                { word: "Mango", audio: "sounds/two/mango.mp3" }
+            ],
+        ];
+
+        let currentLevel = 1;
+        const totalLevels = levels.length; // Dynamic number of levels based on the array length
+
+        // Function to load words for the current level
+        function loadWords() {
+            let wordList = document.getElementById("wordList");
+            wordList.innerHTML = ''; // Clear previous words
+
+            // Get the words for the current level
+            let wordsForLevel = levels[currentLevel - 1]; // Subtract 1 because array is 0-indexed
+
+            wordsForLevel.forEach(item => {
+                let wordElement = document.createElement("div");
+                wordElement.className = "word";
+                wordElement.textContent = item.word;
+                wordElement.onclick = () => playSound(item.audio);
+                wordList.appendChild(wordElement);
+            });
+
+            document.getElementById("level").textContent = `Level ${currentLevel}`;
+        }
+
+        // Play the mp3
+        function playSound(audioPath) {
+            let audio = document.getElementById("audio");
+            audio.src = audioPath;
+            audio.play();
+        }
+
+        // Show the level dropdown
+        function toggleDropdown() {
+            let dropdown = document.getElementById("levelDropdown");
+            dropdown.style.display = dropdown.style.display === "none" || dropdown.style.display === "" ? "block" : "none";
+            populateDropdown();
+        }
+
+        // Populate the dropdown with level options
+        function populateDropdown() {
+            let dropdown = document.getElementById("levelDropdown");
+            dropdown.innerHTML = ''; // Clear existing dropdown content
+
+            for (let i = 1; i <= totalLevels; i++) {
+                let levelOption = document.createElement("div");
+                levelOption.textContent = `Level ${i}`;
+                levelOption.onclick = () => changeLevel(i);
+                dropdown.appendChild(levelOption);
+            }
+        }
+
+        // Change the current level and load the words
+        function changeLevel(level) {
+            currentLevel = level;
+            loadWords();
+            document.getElementById("levelDropdown").style.display = "none";
+        }
+
+        // Go to the next level
+        function nextLevel() {
+            if (currentLevel < totalLevels) {
+                currentLevel++;
+                loadWords();
+            }
+        }
+
+        // Go to the previous level
+        function prevLevel() {
+            if (currentLevel > 1) {
+                currentLevel--;
+                loadWords();
+            }
+        }
+
+        // Add event listeners for navigation arrows
+        document.getElementById("nextLevel").onclick = nextLevel;
+        document.getElementById("prevLevel").onclick = prevLevel;
+
+        // Load words when the page is loaded
+        window.onload = loadWords;
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Vietnamese Levels</title>
+    <style>
+        body {
+            font-family: "Press Start 2P", cursive;
+            margin: 0;
+            padding: 0;
+            background-color: #bdeeff;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+            cursor: url('lantern.png'), auto;
+        }
+
+        #banner {
+            width: 50%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #banner img {
+            width: 100%; 
+            height: auto;
+        }
+
+        #levels-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .level {
+            text-align: center;
+        }
+
+        .level img {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .level img:hover {
+            transform: scale(1.1);
+        }
+
+        .level:nth-child(2) { 
+            margin-left: 60px;
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(3) { 
+            margin-left: 120px;
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(4) { 
+            margin-left: 120px;
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(5) { 
+            margin-left: 60px;
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(6) { 
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(7) { 
+            margin-left: -60px;
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(8) { 
+            margin-left: -120px;
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(9) { 
+            margin-left: -120px;
+            margin-top: 30px;  
+        }
+
+        .level:nth-child(10) { 
+            margin-left: -60px;
+            margin-top: 30px;  
+        }
+
+        #parrot-container {
+            position: absolute;
+            bottom: 90px;
+            left: 50px; 
+        }
+
+        #parrot-container img {
+            width: 200px;
+            height: auto;
+        }
+
+        #hornbill-container {
+            position: absolute;
+            bottom: 300px;
+            left: 1100px; 
+        }
+
+        #hornbill-container img {
+            width: 200px;
+            height: auto;
+        }
+
+        #parrotstick-container {
+            position: absolute;
+            bottom: -7px;
+            left: -20px;  
+        }
+
+        #parrotstick-container img {
+            width: 600px;
+            height: auto;
+        }
+
+        /* Blossom animations */
+        @keyframes fallAndFlip {
+            0% {
+                transform: translateY(-120px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(330vh) rotate(360deg);
+            }
+        }
+
+        .blossom {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url('blossom.png'); /* Replace with your blossom image */
+            background-size: cover;
+            animation: fallAndFlip linear infinite;
+        }
+
+        #hornbillstick-container {
+            position: absolute;
+            bottom: 300px;
+            left: 1115px;  
+        }
+
+        #hornbillstick-container img {
+            width: 400px;
+            height: auto;
+        }
+
+        #monkey-container {
+            position: absolute;
+            bottom: -340px;
+            left: 1200px;  
+        }
+
+        #monkey-container img {
+            width: 200px;
+            height: auto;
+        }
+
+        #monkeystick-container {
+            position: absolute;
+            bottom: -420px;
+            left: 1115px;  
+        }
+
+        #monkeystick-container img {
+            width: 400px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="bg-music" src="viet_music.mp3" autoplay loop></audio>
+
+    <div id="parrot-container">
+        <img src="viet_parrot.gif" alt="Game Mascot">
+    </div>
+    
+    <div id="banner">
+        <img src="viet_banner.png" alt="Game Levels Banner">
+    </div>
+
+    <div id="hornbill-container">
+        <img src="hornbill.gif" alt="Game hornbill">
+    </div>
+
+    <div id="parrotstick-container">
+        <img src="stick1.png" alt="Stick">
+    </div>
+
+    <div id="hornbillstick-container">
+        <img src="stick2.png" alt="Stick 2">
+    </div>
+
+    <div id="monkey-container">
+        <img src="monkey.gif" alt="Monkey">
+    </div>
+
+    <div id="monkeystick-container">
+        <img src="stick2.png" alt="Monkeystick">
+    </div>
+
+
+    <div id="levels-container">
+        <div class="level">
+            <a href="viet_level_one.html">
+                <img src="easy_level.png" alt="Level 1">
+            </a>
+            <h3>Level 1</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_two.html">
+            <img src="easy_level.png" alt="Level 2">
+        </a>
+        <h3>Level 2</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_three.html">
+            <img src="easy_level.png" alt="Level 3">
+        </a>
+        <h3>Level 3</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_four.html">
+            <img src="medium_level.png" alt="Level 4">
+        </a>
+        <h3>Level 4</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_five.html">
+            <img src="medium_level.png" alt="Level 5">
+        </a>
+        <h3>Level 5</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_six.html">
+            <img src="medium_level.png" alt="Level 6">
+        </a>
+        <h3>Level 6</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_seven.html">
+            <img src="medium_level.png" alt="Level 7">
+        </a>
+        <h3>Level 7</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_eight.html">
+            <img src="hard_level.png" alt="Level 8">
+        </a>
+        <h3>Level 8</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_nine.html">
+            <img src="hard_level.png" alt="Level 9">
+        </a>
+        <h3>Level 9</h3>
+        </div>
+        <div class="level">
+            <a href="viet_level_ten.html">
+            <img src="hard_level.png" alt="Level 10">
+        </a>
+        <h3>Level 10</h3>
+        </div>
+    </div>
+
+    <script>
+        // Function to create falling blossoms
+        function createBlossom() {
+            const blossom = document.createElement('div');
+            blossom.classList.add('blossom');
+            
+            // Randomize position and timing
+            const randomLeft = Math.random() * window.innerWidth;
+            const randomDelay = Math.random() * 5;
+            const randomDuration = Math.random() * 5 + 5; // Fall duration between 5 and 10 seconds
+
+            blossom.style.left = `${randomLeft}px`;
+            blossom.style.animationDuration = `${randomDuration}s`;
+            blossom.style.animationDelay = `${randomDelay}s`;
+
+            document.body.appendChild(blossom);
+
+            // Remove the blossom after it falls off the screen
+            setTimeout(() => {
+                blossom.remove();
+            }, (randomDuration + randomDelay) * 1000);
+        }
+
+        // Continuously create blossoms
+        setInterval(createBlossom, 300); // Create a new blossom every 300ms
+
+        //Music to continue playing:
+      document.addEventListener("DOMContentLoaded", function () {
+        let music = document.getElementById("bg-music");
+
+        // Check if the music was playing before
+        if (localStorage.getItem("musicPlaying") === "true") {
+            music.play();
+        }
+
+        music.onplay = function () {
+            localStorage.setItem("musicPlaying", "true");
+        };
+    });
+    </script>
+</body>
+</html>

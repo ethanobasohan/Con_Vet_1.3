@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <title>Vietnamese Pronouns</title>
+  <style>
+  body {
+    font-family: "Press Start 2P", cursive;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+    background-image: url('viet_level_backg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    cursor: url('lantern.png'), auto;
+  }
+
+  #parrot-container {
+    width: 30%;
+    text-align: center;
+  }
+
+  #question-container {
+    width: 70%;
+    padding: 20px;
+    bottom: 185px;
+    left: -50px;
+  }
+
+  img {
+    width: 200px;
+    height: auto;
+  }
+
+  .question {
+    margin-bottom: 20px;
+  }
+
+  .options button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .summary {
+    display: none;
+    text-align: center;
+  }
+
+  .star-container img {
+    width: 50px;
+    margin: 5px;
+  }
+
+  #parrotstick-container {
+  position: absolute;
+  bottom: 185px;
+  left: -100px;  
+  }
+
+#parrotstick-container img {
+  width: 600px;
+  height: auto;
+  }
+
+
+</style>
+
+</head>
+<body>
+  <div id="parrot-container">
+    <img id="parrot" src="language_parrot_idle.gif" alt="Parrot">
+  </div>
+
+  <div id="question-container">
+    <div id="quiz">
+      <div id="question" class="question"></div>
+      <div id="options" class="options"></div>
+    </div>
+
+    <div id="parrotstick-container">
+      <img src="stick1.png" alt="Stick">
+  </div>
+
+    <div id="summary" class="summary">
+      <div id="star-container" class="star-container"></div>
+      <div id="parrot-summary"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+    { q: "Xin chào means", options: ["Hello", "Goodbye", "Good morning", "Good evening"], answer: "Hello" },
+    { q: "Chào buổi sáng means", options: ["Good morning", "Good afternoon", "Good evening", "Goodbye"], answer: "Good morning" },
+    { q: "Tạm biệt means", options: ["Good morning", "Good evening", "Goodbye", "See you again"], answer: "Goodbye" },
+    { q: "Hẹn gặp lại means", options: ["See you again", "Congratulations", "Good luck", "Hello"], answer: "See you again" },
+    { q: "Cảm ơn means", options: ["Sorry", "Thank you", "You're welcome", "I don't understand"], answer: "Thank you" },
+    { q: "Xin lỗi means", options: ["I'm fine", "I don't understand", "Sorry", "Congratulations"], answer: "Sorry" },
+    { q: "Không có gì means", options: ["You're welcome", "See you again", "Goodbye", "Hello"], answer: "You're welcome" },
+    { q: "Chúc mừng means", options: ["Congratulations", "Good luck", "How are you?", "I'm fine"], answer: "Congratulations" },
+    { q: "Chúc may mắn means", options: ["Good morning", "Good evening", "Good luck", "Goodbye"], answer: "Good luck" },
+    { q: "Bạn khỏe không means", options: ["How are you?", "I'm fine", "I don't understand", "See you again"], answer: "How are you?" },
+    { q: "Tôi khỏe means", options: ["I'm fine", "Good luck", "Sorry", "You're welcome"], answer: "I'm fine" },
+    { q: "Tôi không hiểu means", options: ["You're welcome", "I don't understand", "I'm fine", "Congratulations"], answer: "I don't understand" },
+    { q: "Hello Bao", type: "input", placeholder: "___ Bao", answer: ["xin chào", "Xin chào"] },
+    { q: "How are you Mai", type: "input", placeholder: "___ Mai", answer: ["bạn khỏe không", "Bạn khỏe không"] },
+    { q: "Good morning everyone!", type: "input", placeholder: "___ everyone!", answer: ["chào buổi sáng", "Chào buổi sáng"] },
+    { q: "Thank you Linh", type: "input", placeholder: "___ Linh", answer: ["cảm ơn", "Cảm ơn"] },
+    { q: "Good luck Nam", type: "input", placeholder: "___ Nam", answer: ["chúc may mắn", "Chúc may mắn"] },
+    { q: "Sorry Anh", type: "input", placeholder: "___ Anh", answer: ["xin lỗi", "Xin lỗi"] },
+    { q: "You're welcome Hoa", type: "input", placeholder: "___ Hoa", answer: ["không có gì", "Không có gì"] },
+    { q: "See you again Phong", type: "input", placeholder: "___ Phong", answer: ["hẹn gặp lại", "Hẹn gặp lại"] }
+];
+
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const parrot = document.getElementById("parrot");
+    const questionDiv = document.getElementById("question");
+    const optionsDiv = document.getElementById("options");
+    const summaryDiv = document.getElementById("summary");
+    const starContainer = document.getElementById("star-container");
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionDiv.textContent = q.q;
+      optionsDiv.innerHTML = "";
+
+      if (q.type === "input") {
+        const input = document.createElement("input");
+        input.placeholder = q.placeholder;
+        const submitButton = document.createElement("button");
+        submitButton.textContent = "Submit";
+        submitButton.onclick = () => checkAnswer(input.value);
+        optionsDiv.appendChild(input);
+        optionsDiv.appendChild(submitButton);
+      } else {
+        q.options.forEach(option => {
+          const button = document.createElement("button");
+          button.textContent = option;
+          button.onclick = () => checkAnswer(option);
+          optionsDiv.appendChild(button);
+        });
+      }
+    }
+
+    function checkAnswer(answer) {
+      const q = questions[currentQuestion];
+      const isCorrect = Array.isArray(q.answer) ? q.answer.includes(answer) : answer === q.answer;
+
+      if (isCorrect) {
+        score++;
+        parrot.src = "language_parrot_happy.gif";
+
+        // Play the correct sound effect
+        const correctSound = new Audio("right.mp3");
+        correctSound.play();
+      } else {
+        parrot.src = "language_parrot_unhappy.gif";
+
+        // Play the wrong sound effect
+        const wrongSound = new Audio("wrong.mp3");
+        wrongSound.play();
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        setTimeout(() => {
+          parrot.src = "language_parrot_idle.gif";
+          loadQuestion();
+        }, 1000);
+      } else {
+        showSummary();
+      }
+    }
+
+    function showSummary() {
+      document.getElementById("quiz").style.display = "none";
+      summaryDiv.style.display = "block";
+      starContainer.innerHTML = "";
+
+      let starCount = 0;
+      if (score >= 8) starCount = 5;
+      else if (score >= 5) starCount = 3;
+      else starCount = 1;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("img");
+        star.src = "parrot_star.gif";
+        starContainer.appendChild(star);
+      }
+
+      const summaryParrot = document.createElement("img");
+      summaryParrot.src = score >= 5 ? "language_parrot_happy.gif" : "language_parrot_unhappy.gif";
+      const message = document.createElement("p");
+      message.textContent = score >= 5 ? "Congrats!" : "Try harder!";
+      summaryDiv.appendChild(summaryParrot);
+      summaryDiv.appendChild(message);
+
+      //Music to continue playing:
+      document.addEventListener("DOMContentLoaded", function () {
+        let music = document.getElementById("bg-music");
+
+        // Check if the music was playing before
+        if (localStorage.getItem("musicPlaying") === "true") {
+            music.play();
+        }
+
+        music.onplay = function () {
+            localStorage.setItem("musicPlaying", "true");
+        };
+    });
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

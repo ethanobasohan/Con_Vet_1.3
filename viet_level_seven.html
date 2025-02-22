@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vietnamese Locations</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+    background-image: url('viet_level_backg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    cursor: url('lantern.png'), auto;
+  }
+
+  #parrot-container {
+    width: 30%;
+    text-align: center;
+  }
+
+  #question-container {
+    width: 70%;
+    padding: 20px;
+    bottom: 185px;
+    left: -50px;
+  }
+
+  img {
+    width: 200px;
+    height: auto;
+  }
+
+  .question {
+    margin-bottom: 20px;
+  }
+
+  .options button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .summary {
+    display: none;
+    text-align: center;
+  }
+
+  .star-container img {
+    width: 50px;
+    margin: 5px;
+  }
+
+ #parrotstick-container {
+  position: absolute;
+  bottom: 185px;
+  left: -100px;  
+  }
+
+#parrotstick-container img {
+  width: 600px;
+  height: auto;
+  }
+
+
+</style>
+
+</head>
+<body>
+  <div id="parrot-container">
+    <img id="parrot" src="language_parrot_idle.gif" alt="Parrot">
+  </div>
+
+  <div id="question-container">
+    <div id="quiz">
+      <div id="question" class="question"></div>
+      <div id="options" class="options"></div>
+    </div>
+
+    <div id="parrotstick-container">
+      <img src="stick1.png" alt="Stick">
+  </div>
+
+    <div id="summary" class="summary">
+      <div id="star-container" class="star-container"></div>
+      <div id="parrot-summary"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+    { q: "Trường học means", options: ["School", "Store", "Market", "Park"], answer: "School"},
+     { q: "Nhà means", options: ["House", "Park", "Church", "Market"], answer: "House" },
+     { q: "Nhà thờ means", options: ["Park", "Restaurant", "Church", "Market"], answer: "Church" },
+     { q: "Nhà hàng means", options: ["Park", "Coffee Shop", "Train Station", "Restaurant"], answer: "Restaurant" },
+     { q: "Ga tàu means", options: ["Coffee Shop", "Train Station", "Airport", "Park"], answer: "Train Station" },
+     { q: "Công viên means", options: ["Park", "Airport", "Coffee Shop", "City"], answer: "Park" },
+     { q: "Let's drink at the coffee shop", type: "input", placeholder: "Let's drink at the ___", answer: ["Quán cà phê", "quán cà phê", "Quan ca phe", "quan cà phe"] },
+     { q: "I'm late to the airport!", type: "input", placeholder: "I'm late to the ___ !", answer: ["Sân bay", "sân bay", "San bay", "san bay"] },
+     { q: "The market is almost closing", type: "input", placeholder: "The ___ is almost closing", answer: ["Chợ", "chợ", "cho", "Cho"] },
+     { q: "I'm at the store right now", type: "input", placeholder: "I'm at the ___ right now", answer: ["Cửa hàng", "cửa hàng", "Cua hang", "cua hang"] }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const parrot = document.getElementById("parrot");
+    const questionDiv = document.getElementById("question");
+    const optionsDiv = document.getElementById("options");
+    const summaryDiv = document.getElementById("summary");
+    const starContainer = document.getElementById("star-container");
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionDiv.textContent = q.q;
+      optionsDiv.innerHTML = "";
+
+      if (q.type === "input") {
+        const input = document.createElement("input");
+        input.placeholder = q.placeholder;
+        const submitButton = document.createElement("button");
+        submitButton.textContent = "Submit";
+        submitButton.onclick = () => checkAnswer(input.value);
+        optionsDiv.appendChild(input);
+        optionsDiv.appendChild(submitButton);
+      } else {
+        q.options.forEach(option => {
+          const button = document.createElement("button");
+          button.textContent = option;
+          button.onclick = () => checkAnswer(option);
+          optionsDiv.appendChild(button);
+        });
+      }
+    }
+
+    function checkAnswer(answer) {
+      const q = questions[currentQuestion];
+      const isCorrect = Array.isArray(q.answer) ? q.answer.includes(answer) : answer === q.answer;
+
+      if (isCorrect) {
+        score++;
+        parrot.src = "language_parrot_happy.gif";
+
+        // Play the correct sound effect
+        const correctSound = new Audio("right.mp3");
+        correctSound.play();
+      } else {
+        parrot.src = "language_parrot_unhappy.gif";
+
+        // Play the wrong sound effect
+        const wrongSound = new Audio("wrong.mp3");
+        wrongSound.play();
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        setTimeout(() => {
+          parrot.src = "language_parrot_idle.gif";
+          loadQuestion();
+        }, 1000);
+      } else {
+        showSummary();
+      }
+    }
+
+    function showSummary() {
+      document.getElementById("quiz").style.display = "none";
+      summaryDiv.style.display = "block";
+      starContainer.innerHTML = "";
+
+      let starCount = 0;
+      if (score >= 8) starCount = 5;
+      else if (score >= 5) starCount = 3;
+      else starCount = 1;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("img");
+        star.src = "parrot_star.gif";
+        starContainer.appendChild(star);
+      }
+
+      const summaryParrot = document.createElement("img");
+      summaryParrot.src = score >= 5 ? "language_parrot_happy.gif" : "language_parrot_unhappy.gif";
+      const message = document.createElement("p");
+      message.textContent = score >= 5 ? "Congrats!" : "Try harder!";
+      summaryDiv.appendChild(summaryParrot);
+      summaryDiv.appendChild(message);
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

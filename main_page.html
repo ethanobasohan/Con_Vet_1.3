@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Con Vet Main Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: rgb(255, 255, 255);
+            background-color: black;
+            font-family: "Press Start 2P", cursive;
+            text-align: center;
+        }
+
+        #parrot-container {
+            position: absolute;
+            bottom: 300px;
+            left: 390px; 
+        }
+
+        #parrot-container img {
+            width: 700px;
+            height: auto;
+        }
+
+        #vietparrot-container {
+            position: absolute;
+            bottom: 10px;
+            left: 630px; 
+        }
+
+        #vietparrot-container img {
+            width: 200px;
+            height: auto;
+        }
+
+        #vietparrot-container img:hover {
+            transform: scale(1.1);
+        }
+
+        #spanishparrot-container {
+            position: absolute;
+            bottom: -300px;
+            left: 630px; 
+        }
+
+        #spanishparrot-container img {
+            width: 200px;
+            height: auto;
+        }
+
+        #spanishparrot-container img:hover {
+            transform: scale(1.1);
+        }
+
+        #swahiliparrot-container {
+            position: absolute;
+            bottom: -600px;
+            left: 630px; 
+        }
+
+        #swahiliparrot-container img {
+            width: 200px;
+            height: auto;
+        }
+
+        #swahiliparrot-container img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="parrot-container">
+        <img src="mascot_title.gif" alt="Game Mascot Title">
+        <h2>Language Sections</h2>
+    </div>
+
+    <div id="vietparrot-container">
+        <a href="all_viet_levels.html">
+        <img src="viet_parrot.gif" alt="Game Mascot Title">
+    </a>
+        <h3>Vietnamese</h3>
+    </div>
+
+    <div id="spanishparrot-container">
+        <a href="all_spanish_levels.html">
+        <img src="spanish_parrot.gif" alt="Game Mascot Title">
+    </a>
+        <h3>Spanish</h3>
+    </div>
+
+    <div id="swahiliparrot-container">
+        <a href="all_swahili_levels.html">
+        <img src="swahili_parrot.gif" alt="Game Mascot Title">
+    </a>
+        <h3>Swahili</h3>
+    </div>
+</body>
+
+</html>
